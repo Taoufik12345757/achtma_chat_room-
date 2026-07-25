@@ -1,0 +1,1137 @@
+<div id="achtma-root"></div>
+<style>
+  #achtma-root, #achtma-root * { box-sizing: border-box; }
+  #achtma-root {
+    --red-deep: #7A1220;
+    --red-main: #C81E3A;
+    --red-bright: #E63950;
+    --bubble-mine: #FADCE0;
+    --bubble-theirs: #FFFFFF;
+    --paper: #F3E9E6;
+    --ink: #3A1418;
+    --ink-soft: #8A5A5F;
+    --line: #E6D2CE;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    height: 640px;
+    max-height: 82vh;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px -20px rgba(122,18,32,0.45);
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* ---------- LOGIN SCREEN ---------- */
+  .achtma-login {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    padding: 40px 32px;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,255,255,0.10), transparent 40%),
+      linear-gradient(160deg, var(--red-deep), var(--red-main) 60%, var(--red-bright));
+    text-align: center;
+  }
+  .achtma-logo {
+    width: 76px; height: 76px;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.14);
+    display: flex; align-items: center; justify-content: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -1px;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .achtma-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 30px;
+    color: #fff;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+  .achtma-tag {
+    color: rgba(255,255,255,0.78);
+    font-size: 13.5px;
+    margin: -12px 0 4px;
+  }
+  .achtma-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+  }
+  .achtma-field label {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.75);
+    font-weight: 600;
+  }
+  .achtma-row { display: flex; gap: 8px; width: 100%; }
+  .achtma-login input {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+  }
+  .achtma-login input::placeholder { color: rgba(255,255,255,0.6); }
+  .achtma-login input:focus { border-color: #fff; background: rgba(255,255,255,0.22); }
+  .achtma-dice {
+    padding: 0 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .achtma-dice:hover { background: rgba(255,255,255,0.26); }
+  .achtma-join {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    border: none;
+    background: #fff;
+    color: var(--red-main);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .achtma-join:hover { background: #ffe9ec; }
+  .achtma-join:disabled { opacity: 0.55; cursor: not-allowed; }
+  .achtma-hint {
+    color: rgba(255,255,255,0.65);
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+
+  /* ---------- CHAT SCREEN ---------- */
+  .achtma-chat { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .achtma-header {
+    background: var(--red-main);
+    color: #fff;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 2;
+  }
+  .achtma-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-family: Georgia, serif;
+  }
+  .achtma-header-info { flex: 1; min-width: 0; }
+  .achtma-header-info .name { font-weight: 700; font-size: 15.5px; line-height: 1.2; }
+  .achtma-header-info .sub { font-size: 12px; color: rgba(255,255,255,0.8); }
+  .achtma-leave {
+    background: rgba(255,255,255,0.16);
+    border: none; color: #fff; border-radius: 8px;
+    padding: 6px 10px; font-size: 12px; cursor: pointer;
+  }
+  .achtma-leave:hover { background: rgba(255,255,255,0.28); }
+  .achtma-call-btn {
+    background: rgba(255,255,255,0.16);
+    border: none; color: #fff; border-radius: 50%;
+    width: 34px; height: 34px; font-size: 15px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .achtma-call-btn:hover { background: rgba(255,255,255,0.28); }
+
+  .achtma-incoming-banner {
+    position: absolute;
+    left: 10px; right: 10px; top: 68px;
+    background: var(--red-deep);
+    color: #fff;
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+    z-index: 5;
+  }
+  .achtma-incoming-text { font-size: 13.5px; font-weight: 600; }
+  .achtma-incoming-actions { display: flex; gap: 6px; }
+  .achtma-incoming-actions button {
+    border: none; border-radius: 8px; padding: 7px 12px; font-size: 12.5px; cursor: pointer; font-weight: 700;
+  }
+  .achtma-decline-btn { background: rgba(255,255,255,0.18); color: #fff; }
+  .achtma-decline-btn:hover { background: rgba(255,255,255,0.3); }
+  .achtma-accept-btn { background: #fff; color: var(--red-deep); }
+  .achtma-accept-btn:hover { background: #ffe9ec; }
+
+  .achtma-call-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, var(--red-deep), var(--red-main) 65%, var(--red-bright));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    z-index: 10;
+    padding: 30px;
+    text-align: center;
+  }
+  .achtma-audio-call-avatar {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.16);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .achtma-call-label { color: #fff; font-size: 15px; font-weight: 600; letter-spacing: 0.02em; }
+  .achtma-end-call-btn {
+    background: #fff;
+    color: var(--red-deep);
+    border: none;
+    border-radius: 24px;
+    padding: 12px 28px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .achtma-end-call-btn:hover { background: #ffe9ec; }
+  .achtma-video-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 3/4;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.3);
+  }
+  .achtma-video-wrap video#achtma-remote-media {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .achtma-video-wrap video.achtma-local-pip {
+    position: absolute;
+    bottom: 10px; right: 10px;
+    width: 90px; height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.6);
+  }
+
+  .achtma-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    background-image: radial-gradient(rgba(200,30,58,0.05) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+  .achtma-empty {
+    margin: auto;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 24px;
+    line-height: 1.6;
+  }
+  .achtma-bubble-wrap { display: flex; margin: 3px 4px; }
+  .achtma-bubble-wrap.mine { justify-content: flex-end; }
+  .achtma-bubble-wrap.theirs { justify-content: flex-start; }
+  .achtma-bubble {
+    max-width: 76%;
+    padding: 8px 12px;
+    border-radius: 14px;
+    font-size: 14.5px;
+    line-height: 1.4;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    word-wrap: break-word;
+  }
+  .achtma-bubble-wrap.mine .achtma-bubble {
+    background: var(--bubble-mine);
+    border-bottom-right-radius: 4px;
+    color: var(--ink);
+  }
+  .achtma-bubble-wrap.theirs .achtma-bubble {
+    background: var(--bubble-theirs);
+    border-bottom-left-radius: 4px;
+    color: var(--ink);
+  }
+  .achtma-sender {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--red-main);
+    margin-bottom: 2px;
+  }
+  .achtma-time {
+    font-size: 10px;
+    color: var(--ink-soft);
+    margin-top: 3px;
+    text-align: right;
+  }
+
+  .achtma-bubble-wrap.mine .achtma-bubble.achtma-media,
+  .achtma-bubble-wrap.theirs .achtma-bubble.achtma-media {
+    padding: 5px;
+    background: var(--bubble-theirs);
+  }
+  .achtma-icon-btn.recording {
+    background: var(--red-main);
+    color: #fff;
+    animation: achtma-pulse 1s ease-in-out infinite;
+  }
+  @keyframes achtma-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(200,30,58,0.5); }
+    50% { box-shadow: 0 0 0 6px rgba(200,30,58,0); }
+  }
+  .achtma-bubble audio.achtma-voice { width: 210px; height: 34px; }
+  .achtma-bubble-wrap.mine .achtma-bubble.achtma-media { background: var(--bubble-mine); }
+  .achtma-bubble img.achtma-photo {
+    display: block;
+    max-width: 220px;
+    max-height: 260px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  .achtma-bubble.achtma-media .achtma-time { padding: 0 4px; }
+  .achtma-bubble-wrap .achtma-sticker-bubble {
+    background: transparent !important;
+    box-shadow: none;
+    padding: 0 4px;
+    font-size: 56px;
+    line-height: 1;
+  }
+  .achtma-bubble-wrap .achtma-sticker-bubble .achtma-time { text-align: inherit; font-size: 10px; margin-top: 2px; }
+
+  .achtma-inputbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+    background: #fff;
+    border-top: 1px solid var(--line);
+    position: relative;
+  }
+  .achtma-icon-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: var(--paper);
+    color: var(--red-main);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 19px;
+  }
+  .achtma-icon-btn:hover { background: var(--line); }
+  .achtma-sticker-panel {
+    position: absolute;
+    bottom: 58px;
+    left: 12px;
+    right: 12px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .achtma-sticker-heading {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    font-weight: 700;
+    margin: 4px 4px 6px;
+  }
+  .achtma-sticker-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .achtma-sticker-panel button.achtma-tiger-btn {
+    border: none;
+    background: none;
+    padding: 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .achtma-sticker-panel button.achtma-tiger-btn:hover { background: var(--paper); }
+  .achtma-sticker-panel button.achtma-tiger-btn svg { width: 34px; height: 34px; }
+  .achtma-sticker-panel button {
+    border: none;
+    background: none;
+    font-size: 26px;
+    padding: 6px 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .achtma-sticker-panel button:hover { background: var(--paper); }
+  .achtma-upload-note {
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-align: center;
+    padding: 2px 12px 0;
+  }
+  .achtma-inputbar input {
+    flex: 1;
+    padding: 11px 14px;
+    border-radius: 22px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    font-size: 14.5px;
+    outline: none;
+    color: var(--ink);
+  }
+  .achtma-inputbar input:focus { border-color: var(--red-main); }
+  .achtma-send {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--red-main);
+    color: #fff;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .achtma-send:hover { background: var(--red-deep); }
+  .achtma-send:disabled { opacity: 0.4; cursor: not-allowed; }
+  .achtma-status {
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-align: center;
+    padding: 4px 0 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .achtma-bubble-wrap { animation: achtma-pop 0.18s ease-out; }
+  }
+  @keyframes achtma-pop { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+
+<script>
+(function () {
+  const root = document.getElementById('achtma-root');
+  let state = {
+    screen: 'login',
+    name: '',
+    room: '',
+    error: '',
+    messages: [],
+    joining: false,
+  };
+  let pollTimer = null;
+
+  function randomRoom() {
+    const words = ['ember','cedar','ruby','clove','maple','coral','amber','plum','flint','rosewood'];
+    const w = words[Math.floor(Math.random() * words.length)];
+    const n = Math.floor(100 + Math.random() * 900);
+    return w + n;
+  }
+
+  function escapeHtml(s) {
+    const div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  function timeStr(ts) {
+    const d = new Date(ts);
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  // ---------- Voice / video calling (WebRTC, signaled through shared storage) ----------
+  const RTC_CONFIG = { iceServers: [
+    { urls: 'stun:stun.l.google.com:19302' },
+    { urls: 'stun:stun1.l.google.com:19302' }
+  ] };
+  let callState = { active: false };
+
+  function callDocKey(room) { return storageKey(room) + ':call'; }
+
+  async function saveCallDoc(room, doc) {
+    try { await window.storage.set(callDocKey(room), JSON.stringify(doc), true); } catch (e) {}
+  }
+  async function loadCallDoc(room) {
+    try {
+      const res = await window.storage.get(callDocKey(room), true);
+      return res && res.value ? JSON.parse(res.value) : null;
+    } catch (e) { return null; }
+  }
+
+  function waitForIceGatheringComplete(pc, timeoutMs) {
+    return new Promise(resolve => {
+      if (pc.iceGatheringState === 'complete') { resolve(); return; }
+      const check = () => {
+        if (pc.iceGatheringState === 'complete') {
+          pc.removeEventListener('icegatheringstatechange', check);
+          resolve();
+        }
+      };
+      pc.addEventListener('icegatheringstatechange', check);
+      setTimeout(() => { pc.removeEventListener('icegatheringstatechange', check); resolve(); }, timeoutMs);
+    });
+  }
+
+  function attachConnectionMonitoring(pc) {
+    pc.oniceconnectionstatechange = () => {
+      if (callState.pc !== pc) return;
+      const s = pc.iceConnectionState;
+      if ((s === 'connected' || s === 'completed') && callState.status !== 'active') {
+        callState.status = 'active';
+        renderCallOverlay();
+      } else if (s === 'failed' || s === 'disconnected' || s === 'closed') {
+        if (callState.active) {
+          showStatus('Call could not connect. This usually happens when both people are on different networks and there is no relay server available — try testing with both devices on the same Wi-Fi first.');
+          endCall();
+        }
+      }
+    };
+    setTimeout(() => {
+      if (callState.pc === pc && callState.active && pc.iceConnectionState !== 'connected' && pc.iceConnectionState !== 'completed') {
+        showStatus('Call timed out trying to connect. This is often a network/firewall limitation — try the same Wi-Fi network on both sides.');
+        endCall();
+      }
+    }, 15000);
+  }
+
+  function teardownCall() {
+    if (callState.pc) { try { callState.pc.close(); } catch (e) {} }
+    if (callState.localStream) callState.localStream.getTracks().forEach(t => t.stop());
+    callState = { active: false };
+    removeCallOverlay();
+  }
+
+  async function startCall(mode) {
+    if (callState.active || !state.room) return;
+    closeStickerPanel();
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: mode === 'video' });
+    } catch (err) {
+      showStatus('Could not access your ' + (mode === 'video' ? 'camera/microphone' : 'microphone') + '. Check permissions.');
+      return;
+    }
+    const pc = new RTCPeerConnection(RTC_CONFIG);
+    stream.getTracks().forEach(t => pc.addTrack(t, stream));
+    const remoteStream = new MediaStream();
+    pc.ontrack = e => { remoteStream.addTrack(e.track); updateCallMedia(); };
+    callState = {
+      active: true, role: 'caller', mode, pc, localStream: stream, remoteStream,
+      remoteSet: false, status: 'calling', callId: Date.now() + '-' + Math.random().toString(36).slice(2, 6)
+    };
+    attachConnectionMonitoring(pc);
+    renderCallOverlay();
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    await waitForIceGatheringComplete(pc, 4000);
+    await saveCallDoc(state.room, {
+      callId: callState.callId, mode, caller: state.name, status: 'ringing',
+      offer: pc.localDescription, ts: Date.now()
+    });
+    if (!callState.active) return;
+    callState.status = 'ringing';
+    renderCallOverlay();
+  }
+
+  async function acceptCall() {
+    const doc = state.pendingCall;
+    if (!doc) return;
+    state.pendingCall = null;
+    removeIncomingBanner();
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: doc.mode === 'video' });
+    } catch (err) {
+      showStatus('Could not access your ' + (doc.mode === 'video' ? 'camera/microphone' : 'microphone') + '.');
+      await saveCallDoc(state.room, Object.assign({}, doc, { status: 'declined' }));
+      return;
+    }
+    const pc = new RTCPeerConnection(RTC_CONFIG);
+    stream.getTracks().forEach(t => pc.addTrack(t, stream));
+    const remoteStream = new MediaStream();
+    pc.ontrack = e => { remoteStream.addTrack(e.track); updateCallMedia(); };
+    callState = {
+      active: true, role: 'callee', mode: doc.mode, pc, localStream: stream, remoteStream,
+      status: 'active', callId: doc.callId
+    };
+    attachConnectionMonitoring(pc);
+    renderCallOverlay();
+    await pc.setRemoteDescription(doc.offer);
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+    await waitForIceGatheringComplete(pc, 4000);
+    if (!callState.active) return;
+    await saveCallDoc(state.room, Object.assign({}, doc, { status: 'active', answer: pc.localDescription }));
+  }
+
+  async function declineCall() {
+    const doc = state.pendingCall;
+    state.pendingCall = null;
+    removeIncomingBanner();
+    if (doc) await saveCallDoc(state.room, Object.assign({}, doc, { status: 'declined' }));
+  }
+
+  async function endCall() {
+    const cid = callState.callId;
+    const room = state.room;
+    teardownCall();
+    if (!room) return;
+    const doc = await loadCallDoc(room);
+    if (doc && doc.callId === cid && doc.status !== 'ended') {
+      await saveCallDoc(room, Object.assign({}, doc, { status: 'ended' }));
+    }
+  }
+
+  async function handleCallDocUpdate(doc) {
+    if (!doc) return;
+    if (callState.active && callState.callId === doc.callId) {
+      if (callState.role === 'caller' && doc.status === 'active' && !callState.remoteSet && doc.answer) {
+        callState.remoteSet = true;
+        await callState.pc.setRemoteDescription(doc.answer);
+        callState.status = 'active';
+        renderCallOverlay();
+        return;
+      }
+      if (doc.status === 'declined') {
+        showStatus('Call declined.');
+        teardownCall();
+        return;
+      }
+      if (doc.status === 'ended') {
+        teardownCall();
+        return;
+      }
+      return;
+    }
+    if (!callState.active && doc.status === 'ringing' && doc.caller !== state.name) {
+      if (!state.pendingCall || state.pendingCall.callId !== doc.callId) {
+        state.pendingCall = doc;
+        showIncomingBanner(doc);
+      }
+      return;
+    }
+    if (state.pendingCall && state.pendingCall.callId === doc.callId && doc.status !== 'ringing') {
+      state.pendingCall = null;
+      removeIncomingBanner();
+    }
+  }
+
+  function updateCallMedia() {
+    const localEl = root.querySelector('#achtma-local-media');
+    const remoteEl = root.querySelector('#achtma-remote-media');
+    if (localEl && callState.localStream) localEl.srcObject = callState.localStream;
+    if (remoteEl && callState.remoteStream) remoteEl.srcObject = callState.remoteStream;
+  }
+
+  function renderCallOverlay() {
+    removeCallOverlay();
+    if (!callState.active) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'achtma-call-overlay';
+    overlay.className = 'achtma-call-overlay';
+    const label = callState.status === 'calling' ? 'Calling…' : callState.status === 'ringing' ? 'Ringing…' : 'Connected';
+    const mediaHtml = callState.mode === 'video'
+      ? '<div class="achtma-video-wrap"><video id="achtma-remote-media" autoplay playsinline></video><video id="achtma-local-media" autoplay playsinline muted class="achtma-local-pip"></video></div>'
+      : '<div class="achtma-audio-call-avatar">📞</div><audio id="achtma-remote-media" autoplay></audio><audio id="achtma-local-media" autoplay muted style="display:none"></audio>';
+    overlay.innerHTML = mediaHtml +
+      '<div class="achtma-call-label">' + (callState.mode === 'video' ? 'Video call — ' : 'Voice call — ') + label + '</div>' +
+      '<button id="achtma-end-call-btn" class="achtma-end-call-btn">End call</button>';
+    root.appendChild(overlay);
+    root.querySelector('#achtma-end-call-btn').addEventListener('click', endCall);
+    updateCallMedia();
+  }
+  function removeCallOverlay() {
+    const el = root.querySelector('#achtma-call-overlay');
+    if (el) el.remove();
+  }
+  function showIncomingBanner(doc) {
+    removeIncomingBanner();
+    const chatDiv = root.querySelector('.achtma-chat');
+    if (!chatDiv) return;
+    const banner = document.createElement('div');
+    banner.id = 'achtma-incoming-banner';
+    banner.className = 'achtma-incoming-banner';
+    banner.innerHTML =
+      '<div class="achtma-incoming-text">' + escapeHtml(doc.caller) + ' is calling (' + (doc.mode === 'video' ? 'video' : 'voice') + ')</div>' +
+      '<div class="achtma-incoming-actions">' +
+        '<button id="achtma-decline-btn" class="achtma-decline-btn">Decline</button>' +
+        '<button id="achtma-accept-btn" class="achtma-accept-btn">Accept</button>' +
+      '</div>';
+    chatDiv.appendChild(banner);
+    banner.querySelector('#achtma-accept-btn').addEventListener('click', acceptCall);
+    banner.querySelector('#achtma-decline-btn').addEventListener('click', declineCall);
+  }
+  function removeIncomingBanner() {
+    const el = root.querySelector('#achtma-incoming-banner');
+    if (el) el.remove();
+  }
+
+  function storageKey(room) {
+    return 'achtma:room:' + room.trim().toLowerCase();
+  }
+
+  const STICKERS = ['😂','❤️','🔥','👍','😍','😮','😢','🙏','🎉','😎','🤝','💯','😅','😴','🥳','👋','😘','🤔','😡','👏','🌹','☕','🐪','⚽'];
+
+  const TIGER_HEAD =
+    '<circle cx="24" cy="22" r="15" fill="#EE8C33"/>' +
+    '<circle cx="76" cy="22" r="15" fill="#EE8C33"/>' +
+    '<circle cx="24" cy="24" r="7" fill="#FFF6E9"/>' +
+    '<circle cx="76" cy="24" r="7" fill="#FFF6E9"/>' +
+    '<circle cx="50" cy="54" r="40" fill="#F2911F"/>' +
+    '<path d="M50 14 L47 32 M50 14 L53 32" stroke="#241512" stroke-width="4" stroke-linecap="round"/>' +
+    '<path d="M28 18 L34 34" stroke="#241512" stroke-width="4" stroke-linecap="round"/>' +
+    '<path d="M72 18 L66 34" stroke="#241512" stroke-width="4" stroke-linecap="round"/>' +
+    '<path d="M12 48 Q20 52 28 50" stroke="#241512" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
+    '<path d="M88 48 Q80 52 72 50" stroke="#241512" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
+    '<ellipse cx="50" cy="68" rx="24" ry="17" fill="#FFF6E9"/>';
+  const TIGER_NOSE = '<path d="M44 57 Q50 62 56 57 Q53 60 50 60 Q47 60 44 57 Z" fill="#241512"/>';
+  function tigerHeart(cx, cy, color) {
+    return '<path d="M' + (cx-6) + ',' + (cy-2) + ' C' + (cx-6) + ',' + (cy-5) + ' ' + (cx-2) + ',' + (cy-6) + ' ' + cx + ',' + (cy-3) +
+      ' C' + (cx+2) + ',' + (cy-6) + ' ' + (cx+6) + ',' + (cy-5) + ' ' + (cx+6) + ',' + (cy-2) +
+      ' C' + (cx+6) + ',' + (cy+2) + ' ' + cx + ',' + (cy+7) + ' ' + cx + ',' + (cy+7) +
+      ' C' + cx + ',' + (cy+7) + ' ' + (cx-6) + ',' + (cy+2) + ' ' + (cx-6) + ',' + (cy-2) + ' Z" fill="' + color + '"/>';
+  }
+
+  const TIGER_EXPR = {
+    happy: '<circle cx="38" cy="50" r="4.5" fill="#241512"/><circle cx="62" cy="50" r="4.5" fill="#241512"/>' + TIGER_NOSE +
+      '<path d="M36 66 Q50 78 64 66" stroke="#241512" stroke-width="4" fill="none" stroke-linecap="round"/>',
+    laugh: '<path d="M31 48 Q38 41 45 48" stroke="#241512" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<path d="M55 48 Q62 41 69 48" stroke="#241512" stroke-width="4" fill="none" stroke-linecap="round"/>' + TIGER_NOSE +
+      '<path d="M34 64 Q50 90 66 64 Q50 76 34 64 Z" fill="#5C1A1A"/><ellipse cx="50" cy="76" rx="8" ry="6" fill="#F17E93"/>',
+    love: tigerHeart(38, 48, '#D62839') + tigerHeart(62, 48, '#D62839') + TIGER_NOSE +
+      '<path d="M40 66 Q50 74 60 66" stroke="#241512" stroke-width="3.5" fill="none" stroke-linecap="round"/>',
+    angry: '<path d="M28 42 L46 47" stroke="#241512" stroke-width="4" stroke-linecap="round"/>' +
+      '<path d="M72 42 L54 47" stroke="#241512" stroke-width="4" stroke-linecap="round"/>' +
+      '<circle cx="38" cy="52" r="4" fill="#241512"/><circle cx="62" cy="52" r="4" fill="#241512"/>' + TIGER_NOSE +
+      '<circle cx="26" cy="60" r="5" fill="#E23B3B" opacity="0.5"/><circle cx="74" cy="60" r="5" fill="#E23B3B" opacity="0.5"/>' +
+      '<path d="M36 74 Q50 64 64 74" stroke="#241512" stroke-width="4" fill="none" stroke-linecap="round"/>',
+    sad: '<path d="M30 44 Q38 40 46 46" stroke="#241512" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
+      '<path d="M70 44 Q62 40 54 46" stroke="#241512" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="38" cy="52" r="4" fill="#241512"/><circle cx="62" cy="52" r="4" fill="#241512"/>' + TIGER_NOSE +
+      '<path d="M64 54 Q68 62 64 66 Q60 62 64 54 Z" fill="#4FA3D1"/>' +
+      '<path d="M38 72 Q50 64 62 72" stroke="#241512" stroke-width="3.5" fill="none" stroke-linecap="round"/>',
+    surprised: '<circle cx="38" cy="49" r="7" fill="#fff" stroke="#241512" stroke-width="2"/><circle cx="38" cy="49" r="3" fill="#241512"/>' +
+      '<circle cx="62" cy="49" r="7" fill="#fff" stroke="#241512" stroke-width="2"/><circle cx="62" cy="49" r="3" fill="#241512"/>' + TIGER_NOSE +
+      '<ellipse cx="50" cy="72" rx="7" ry="9" fill="#5C1A1A"/>',
+    wink: '<path d="M31 49 Q38 43 45 49" stroke="#241512" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="62" cy="50" r="4.5" fill="#241512"/>' + TIGER_NOSE +
+      '<path d="M38 66 Q50 76 62 66" stroke="#241512" stroke-width="3.5" fill="none" stroke-linecap="round"/>',
+    cool: '<rect x="28" y="44" width="20" height="11" rx="4" fill="#111"/><rect x="52" y="44" width="20" height="11" rx="4" fill="#111"/>' +
+      '<rect x="48" y="47" width="4" height="4" fill="#111"/>' +
+      '<rect x="32" y="46" width="6" height="3" rx="1.5" fill="#fff" opacity="0.5"/><rect x="56" y="46" width="6" height="3" rx="1.5" fill="#fff" opacity="0.5"/>' + TIGER_NOSE +
+      '<path d="M40 68 Q50 72 60 66" stroke="#241512" stroke-width="3.5" fill="none" stroke-linecap="round"/>',
+    sleepy: '<path d="M32 50 L46 50" stroke="#241512" stroke-width="3.5" stroke-linecap="round"/>' +
+      '<path d="M54 50 L68 50" stroke="#241512" stroke-width="3.5" stroke-linecap="round"/>' + TIGER_NOSE +
+      '<ellipse cx="50" cy="70" rx="4" ry="3" fill="#5C1A1A"/>' +
+      '<text x="72" y="26" font-size="12" fill="#241512" font-family="Georgia, serif">z</text>' +
+      '<text x="80" y="16" font-size="9" fill="#241512" font-family="Georgia, serif">z</text>',
+    party: '<path d="M50 2 L36 24 L64 24 Z" fill="#C81E3A"/><circle cx="50" cy="2" r="3" fill="#FFD34D"/>' +
+      '<circle cx="42" cy="18" r="2" fill="#FFD34D"/><circle cx="58" cy="16" r="2" fill="#4FA3D1"/>' +
+      '<path d="M31 48 Q38 41 45 48" stroke="#241512" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<path d="M55 48 Q62 41 69 48" stroke="#241512" stroke-width="4" fill="none" stroke-linecap="round"/>' + TIGER_NOSE +
+      '<path d="M36 66 Q50 82 64 66 Q50 74 36 66 Z" fill="#5C1A1A"/>',
+    thumbsup: '<circle cx="38" cy="50" r="4.5" fill="#241512"/><circle cx="62" cy="50" r="4.5" fill="#241512"/>' + TIGER_NOSE +
+      '<path d="M36 66 Q50 78 64 66" stroke="#241512" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<g transform="translate(66,64)"><rect x="-4" y="0" width="14" height="18" rx="6" fill="#EE8C33" stroke="#241512" stroke-width="2"/>' +
+      '<rect x="2" y="-12" width="8" height="16" rx="4" fill="#EE8C33" stroke="#241512" stroke-width="2"/></g>',
+    kiss: '<path d="M31 49 Q38 44 45 49" stroke="#241512" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
+      '<path d="M55 49 Q62 44 69 49" stroke="#241512" stroke-width="3.5" fill="none" stroke-linecap="round"/>' + TIGER_NOSE +
+      '<ellipse cx="50" cy="70" rx="6" ry="5" fill="#D8577A"/>' +
+      '<path d="M74,38 c0,-2 2,-3 3,-3 c1,0 2,1 2,2 c0,-1 1,-2 2,-2 c1,0 3,1 3,3 c0,3 -5,6 -5,6 c0,0 -5,-3 -5,-6 Z" fill="#D62839"/>',
+  };
+  const TIGER_IDS = ['happy','laugh','love','angry','sad','surprised','wink','cool','sleepy','party','thumbsup','kiss'];
+
+  function tigerSVG(id, px) {
+    const parts = TIGER_EXPR[id] || TIGER_EXPR.happy;
+    return '<svg viewBox="0 0 100 100" width="' + px + '" height="' + px + '" xmlns="http://www.w3.org/2000/svg">' + TIGER_HEAD + parts + '</svg>';
+  }
+  const MAX_ROOM_BYTES = 4 * 1024 * 1024; // stay safely under the 5MB per-key storage limit
+
+  function roughByteSize(obj) {
+    return new Blob([JSON.stringify(obj)]).size;
+  }
+
+  function compressImage(file, maxDim, quality) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = () => { img.src = reader.result; };
+      reader.onerror = () => reject(new Error('read failed'));
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > height && width > maxDim) { height = Math.round(height * (maxDim / width)); width = maxDim; }
+        else if (height > maxDim) { width = Math.round(width * (maxDim / height)); height = maxDim; }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => reject(new Error('image decode failed'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function loadMessages(room) {
+    try {
+      const res = await window.storage.get(storageKey(room), true);
+      if (res && res.value) {
+        return JSON.parse(res.value);
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async function saveMessages(room, messages) {
+    try {
+      await window.storage.set(storageKey(room), JSON.stringify(messages), true);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function joinRoom() {
+    const nameInput = root.querySelector('#achtma-name');
+    const roomInput = root.querySelector('#achtma-room');
+    const name = nameInput.value.trim();
+    let room = roomInput.value.trim();
+    if (!name) { state.error = 'Enter your name to continue.'; render(); return; }
+    if (!room) { room = randomRoom(); }
+    state.name = name;
+    state.room = room;
+    state.joining = true;
+    state.error = '';
+    render();
+    state.messages = await loadMessages(room);
+    state.joining = false;
+    state.screen = 'chat';
+    render();
+    startPolling();
+  }
+
+  function leaveRoom() {
+    stopPolling();
+    if (callState.active) endCall();
+    state.pendingCall = null;
+    state = { screen: 'login', name: state.name, room: '', error: '', messages: [], joining: false };
+    render();
+  }
+
+  function startPolling() {
+    stopPolling();
+    pollTimer = setInterval(async () => {
+      if (state.screen !== 'chat') return;
+      const fresh = await loadMessages(state.room);
+      if (fresh.length !== state.messages.length) {
+        state.messages = fresh;
+        renderMessages(true);
+      }
+      const callDoc = await loadCallDoc(state.room);
+      handleCallDocUpdate(callDoc);
+    }, 2500);
+  }
+  function stopPolling() {
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = null;
+  }
+
+  async function pushMessage(partial) {
+    const msg = Object.assign(
+      { id: Date.now() + '-' + Math.random().toString(36).slice(2, 7), user: state.name, ts: Date.now() },
+      partial
+    );
+    const current = await loadMessages(state.room);
+    const projected = current.concat([msg]);
+    if (roughByteSize(projected) > MAX_ROOM_BYTES) {
+      showStatus('This room is full of photos — ask your friend to clear some space, or start a new room code.');
+      return false;
+    }
+    current.push(msg);
+    state.messages = current;
+    renderMessages(true);
+    const ok = await saveMessages(state.room, current);
+    if (!ok) showStatus('Could not send — check your connection and try again.');
+    return ok;
+  }
+
+  function showStatus(text, persist) {
+    const el = root.querySelector('#achtma-status');
+    if (!el) return;
+    el.textContent = text;
+    clearTimeout(showStatus._t);
+    if (!persist) {
+      showStatus._t = setTimeout(() => { if (el) el.textContent = 'Syncs automatically every few seconds'; }, 4000);
+    }
+  }
+
+  async function sendMessage() {
+    const input = root.querySelector('#achtma-input');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    await pushMessage({ type: 'text', text });
+  }
+
+  async function sendSticker(kind, value) {
+    closeStickerPanel();
+    await pushMessage({ type: 'sticker', kind, value });
+  }
+
+  async function handlePhotoPick(e) {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { showStatus('Only photos are supported for now, not videos.'); return; }
+    showStatus('Compressing photo…');
+    try {
+      const dataUrl = await compressImage(file, 700, 0.65);
+      let sizeOk = roughByteSize({ dataUrl }) < 900 * 1024;
+      let finalUrl = dataUrl;
+      if (!sizeOk) {
+        finalUrl = await compressImage(file, 420, 0.5);
+      }
+      await pushMessage({ type: 'image', dataUrl: finalUrl });
+    } catch (err) {
+      showStatus('Could not send that photo — try a different one.');
+    }
+  }
+
+  let recorder = null;
+  let recordedChunks = [];
+  let recordTimer = null;
+  let recordSeconds = 0;
+  const MAX_RECORD_SECONDS = 60;
+
+  function blobToDataUrl(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error('read failed'));
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  async function toggleRecording() {
+    const btn = root.querySelector('#achtma-mic-btn');
+    if (recorder && recorder.state === 'recording') {
+      recorder.stop();
+      return;
+    }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === 'undefined') {
+      showStatus('Voice messages need microphone access, which this browser tab does not support.');
+      return;
+    }
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (err) {
+      showStatus('Microphone access was blocked. Allow it in your browser, or open the published link directly.');
+      return;
+    }
+    recordedChunks = [];
+    try {
+      recorder = new MediaRecorder(stream);
+    } catch (err) {
+      showStatus('This browser cannot record audio.');
+      stream.getTracks().forEach(t => t.stop());
+      return;
+    }
+    recorder.ondataavailable = e => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
+    recorder.onstop = async () => {
+      stream.getTracks().forEach(t => t.stop());
+      clearInterval(recordTimer);
+      if (btn) { btn.classList.remove('recording'); btn.textContent = '🎤'; }
+      showStatus('Syncs automatically every few seconds');
+      const blob = new Blob(recordedChunks, { type: recorder.mimeType || 'audio/webm' });
+      if (blob.size < 500) return; // too short / accidental tap
+      try {
+        const dataUrl = await blobToDataUrl(blob);
+        await pushMessage({ type: 'audio', dataUrl, seconds: recordSeconds });
+      } catch (err) {
+        showStatus('Could not send that voice message.');
+      }
+      recorder = null;
+    };
+    recorder.start();
+    recordSeconds = 0;
+    if (btn) btn.classList.add('recording');
+    showStatus('Recording… 0:00');
+    recordTimer = setInterval(() => {
+      recordSeconds += 1;
+      showStatus('Recording… 0:' + String(recordSeconds).padStart(2, '0'), true);
+      if (recordSeconds >= MAX_RECORD_SECONDS && recorder && recorder.state === 'recording') {
+        recorder.stop();
+      }
+    }, 1000);
+  }
+
+  function toggleStickerPanel() {
+    const existing = root.querySelector('#achtma-sticker-panel');
+    if (existing) { closeStickerPanel(); return; }
+    const bar = root.querySelector('.achtma-inputbar');
+    const panel = document.createElement('div');
+    panel.className = 'achtma-sticker-panel';
+    panel.id = 'achtma-sticker-panel';
+    panel.innerHTML =
+      '<div class="achtma-sticker-heading">Tiger reactions</div>' +
+      '<div class="achtma-sticker-grid">' +
+        TIGER_IDS.map(id => '<button type="button" class="achtma-tiger-btn" data-tiger="' + id + '" title="' + id + '">' + tigerSVG(id, 34) + '</button>').join('') +
+      '</div>' +
+      '<div class="achtma-sticker-heading">Emoji</div>' +
+      '<div class="achtma-sticker-grid">' +
+        STICKERS.map(s => '<button type="button" data-emoji="' + s + '">' + s + '</button>').join('') +
+      '</div>';
+    bar.appendChild(panel);
+    panel.querySelectorAll('button[data-emoji]').forEach(btn => {
+      btn.addEventListener('click', () => sendSticker('emoji', btn.getAttribute('data-emoji')));
+    });
+    panel.querySelectorAll('button[data-tiger]').forEach(btn => {
+      btn.addEventListener('click', () => sendSticker('tiger', btn.getAttribute('data-tiger')));
+    });
+  }
+  function closeStickerPanel() {
+    const existing = root.querySelector('#achtma-sticker-panel');
+    if (existing) existing.remove();
+  }
+
+  function renderMessages(scroll) {
+    const wrap = root.querySelector('#achtma-messages');
+    if (!wrap) return;
+    if (state.messages.length === 0) {
+      wrap.innerHTML = '<div class="achtma-empty">No messages yet in <strong>' + escapeHtml(state.room) + '</strong>.<br>Send the first one, and share this room code with your friend so they can join too.</div>';
+      return;
+    }
+    wrap.innerHTML = state.messages.map(m => {
+      const mine = m.user === state.name;
+      const senderTag = mine ? '' : '<div class="achtma-sender">' + escapeHtml(m.user) + '</div>';
+      let inner;
+      let bubbleClass = 'achtma-bubble';
+      if (m.type === 'image') {
+        bubbleClass += ' achtma-media';
+        inner = senderTag +
+          '<img class="achtma-photo" src="' + m.dataUrl + '" alt="photo shared in chat" />' +
+          '<div class="achtma-time">' + timeStr(m.ts) + '</div>';
+      } else if (m.type === 'audio') {
+        bubbleClass += ' achtma-media';
+        inner = senderTag +
+          '<audio class="achtma-voice" controls src="' + m.dataUrl + '"></audio>' +
+          '<div class="achtma-time">' + timeStr(m.ts) + '</div>';
+      } else if (m.type === 'sticker') {
+        bubbleClass += ' achtma-sticker-bubble';
+        const isTiger = m.kind === 'tiger';
+        const content = isTiger ? tigerSVG(m.value, 64) : (m.value || m.emoji || '');
+        inner = senderTag +
+          '<div>' + content + '</div>' +
+          '<div class="achtma-time">' + timeStr(m.ts) + '</div>';
+      } else {
+        inner = senderTag + escapeHtml(m.text || '') + '<div class="achtma-time">' + timeStr(m.ts) + '</div>';
+      }
+      return '<div class="achtma-bubble-wrap ' + (mine ? 'mine' : 'theirs') + '">' +
+        '<div class="' + bubbleClass + '">' + inner + '</div></div>';
+    }).join('');
+    if (scroll) wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  function render() {
+    if (state.screen === 'login') {
+      root.innerHTML =
+        '<div class="achtma-login">' +
+          '<div class="achtma-logo">A</div>' +
+          '<h1 class="achtma-title">Achtma</h1>' +
+          '<p class="achtma-tag">Chat with a friend, no download needed</p>' +
+          '<div class="achtma-field">' +
+            '<label for="achtma-name">Your name</label>' +
+            '<input id="achtma-name" placeholder="e.g. Youssef" maxlength="24" value="' + escapeHtml(state.name) + '" />' +
+          '</div>' +
+          '<div class="achtma-field">' +
+            '<label for="achtma-room">Room code</label>' +
+            '<div class="achtma-row">' +
+              '<input id="achtma-room" placeholder="Leave blank to create one" maxlength="24" />' +
+              '<button class="achtma-dice" id="achtma-dice" title="Generate a room code">🎲</button>' +
+            '</div>' +
+          '</div>' +
+          (state.error ? '<div style="color:#fff;background:rgba(0,0,0,0.2);padding:8px 12px;border-radius:10px;font-size:13px;width:100%;">' + escapeHtml(state.error) + '</div>' : '') +
+          '<button class="achtma-join" id="achtma-join-btn" ' + (state.joining ? 'disabled' : '') + '>' + (state.joining ? 'Joining…' : 'Join chat') + '</button>' +
+          '<p class="achtma-hint">Create a room, then send your friend the same room code (or this link). Once you both join with the same code, your messages sync between you.</p>' +
+        '</div>';
+
+      root.querySelector('#achtma-join-btn').addEventListener('click', joinRoom);
+      root.querySelector('#achtma-dice').addEventListener('click', () => {
+        root.querySelector('#achtma-room').value = randomRoom();
+      });
+      root.querySelector('#achtma-room').addEventListener('keydown', e => { if (e.key === 'Enter') joinRoom(); });
+      root.querySelector('#achtma-name').addEventListener('keydown', e => { if (e.key === 'Enter') joinRoom(); });
+    } else {
+      root.innerHTML =
+        '<div class="achtma-chat">' +
+          '<div class="achtma-header">' +
+            '<div class="achtma-avatar">A</div>' +
+            '<div class="achtma-header-info">' +
+              '<div class="name">Achtma — ' + escapeHtml(state.room) + '</div>' +
+              '<div class="sub">Signed in as ' + escapeHtml(state.name) + '</div>' +
+            '</div>' +
+            '<button class="achtma-call-btn" id="achtma-audio-call-btn" title="Voice call" aria-label="Voice call">📞</button>' +
+            '<button class="achtma-call-btn" id="achtma-video-call-btn" title="Video call" aria-label="Video call">🎥</button>' +
+            '<button class="achtma-leave" id="achtma-leave-btn">Leave</button>' +
+          '</div>' +
+          '<div class="achtma-messages" id="achtma-messages"></div>' +
+          '<div class="achtma-inputbar">' +
+            '<button class="achtma-icon-btn" id="achtma-attach-btn" title="Send a photo" aria-label="Send a photo">📎</button>' +
+            '<input type="file" id="achtma-file-input" accept="image/*" style="display:none" />' +
+            '<button class="achtma-icon-btn" id="achtma-sticker-btn" title="Stickers" aria-label="Stickers">😊</button>' +
+            '<button class="achtma-icon-btn" id="achtma-mic-btn" title="Record a voice message" aria-label="Record a voice message">🎤</button>' +
+            '<input id="achtma-input" placeholder="Type a message" maxlength="500" />' +
+            '<button class="achtma-send" id="achtma-send-btn" aria-label="Send">' +
+              '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 20L21 12L3 4V10L15 12L3 14V20Z" fill="white"/></svg>' +
+            '</button>' +
+          '</div>' +
+          '<div class="achtma-status" id="achtma-status">Syncs automatically every few seconds</div>' +
+        '</div>';
+
+      renderMessages(true);
+      root.querySelector('#achtma-leave-btn').addEventListener('click', leaveRoom);
+      root.querySelector('#achtma-send-btn').addEventListener('click', sendMessage);
+      root.querySelector('#achtma-input').addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+      root.querySelector('#achtma-attach-btn').addEventListener('click', () => root.querySelector('#achtma-file-input').click());
+      root.querySelector('#achtma-file-input').addEventListener('change', handlePhotoPick);
+      root.querySelector('#achtma-sticker-btn').addEventListener('click', toggleStickerPanel);
+      root.querySelector('#achtma-mic-btn').addEventListener('click', toggleRecording);
+      root.querySelector('#achtma-audio-call-btn').addEventListener('click', () => startCall('audio'));
+      root.querySelector('#achtma-video-call-btn').addEventListener('click', () => startCall('video'));
+      if (callState.active) renderCallOverlay();
+      if (state.pendingCall) showIncomingBanner(state.pendingCall);
+    }
+  }
+
+  render();
+})();
+</script>
+</div>
